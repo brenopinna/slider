@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Slider</title>
+   <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+   <div id="slider">
+      <div id="img-container">
+         <img id="1" class="slide-img" src="./images/img1.jpg" />
+         <img id="2" class="slide-img" src="./images/img2.jpg" />
+         <img id="3" class="slide-img" src="./images/img3.jpg" />
+      </div>
+      <div class="circles"></div>
+   </div>
+<script src="./jquery-3.6.1.min.js"></script>
+<script>
+   $(() => {
+      let starterId = 3;
+      let id = starterId;
+      const slidesInterval = 1000;
+
+      createCircles(starterId);
+      changeSlide(starterId);
+
+      setInterval(() => {
+         id < $('.slide-img').length ? id++ : id = 1;
+         changeSlide(id);
+      }, slidesInterval);
+
+      $('.circle').click(function(){
+         let circleId = $(this).attr('id');
+         changeSlide(circleId)
+         id = circleId;
+      })
+
+      function createCircles(id){
+         $('.slide-img').each(function(){
+            const imgId = +$(this).attr('id');
+            const circle = $('<span />', {class: imgId === id ? 'circle selected' : 'circle', id: imgId})
+            $('.circles').append(circle)
+         })
+      }
+
+      function changeSlide(id){
+         $('.slide-img').fadeOut(200);
+         setTimeout(() => {
+            $(`.slide-img#${id}`).fadeIn(600)
+            $(`.circle.selected`).removeClass('selected');
+            $(`#${id}.circle`).addClass('selected');
+         }, 205);
+      }
+   })
+</script>
+</body>
+</html>
