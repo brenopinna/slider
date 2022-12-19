@@ -10,48 +10,53 @@
 <body>
    <div id="slider">
       <div id="img-container">
-         <img id="1" class="slide-img" src="./images/img1.jpg" />
-         <img id="2" class="slide-img" src="./images/img2.jpg" />
-         <img id="3" class="slide-img" src="./images/img3.jpg" />
+         <img class="slide-img" src="./images/img1.jpg" />
+         <img class="slide-img" src="./images/img2.jpg" />
+         <img class="slide-img" src="./images/img3.jpg" />
+         <img class="slide-img" src="./images/img1.jpg" />
+         <img class="slide-img" src="./images/img2.jpg" />
+         <img class="slide-img" src="./images/img3.jpg" />
       </div>
       <div class="circles"></div>
    </div>
 <script src="./jquery-3.6.1.min.js"></script>
 <script>
    $(() => {
-      let starterId = 3;
-      let id = starterId;
-      const slidesInterval = 1000;
+      const images = $('.slide-img');
+      const numberOfImages = images.length;
+      let imageNumber = 0;
+      const delay = 1000;
 
-      createCircles(starterId);
-      changeSlide(starterId);
+      createCircles(numberOfImages);
+      const circles = $('.circle');
 
-      setInterval(() => {
-         id < $('.slide-img').length ? id++ : id = 1;
-         changeSlide(id);
-      }, slidesInterval);
-
-      $('.circle').click(function(){
-         let circleId = $(this).attr('id');
-         changeSlide(circleId)
-         id = circleId;
+      circles.click(function(){
+         imageNumber = circles.index(this);
       })
 
-      function createCircles(id){
-         $('.slide-img').each(function(){
-            const imgId = +$(this).attr('id');
-            const circle = $('<span />', {class: imgId === id ? 'circle selected' : 'circle', id: imgId})
-            $('.circles').append(circle)
-         })
-      }
+      setInterval(() => {
+         imageNumber++;
+         if(imageNumber === numberOfImages) imageNumber = 0;
+      }, 1000);
 
-      function changeSlide(id){
-         $('.slide-img').fadeOut(200);
-         setTimeout(() => {
-            $(`.slide-img#${id}`).fadeIn(600)
-            $(`.circle.selected`).removeClass('selected');
-            $(`#${id}.circle`).addClass('selected');
-         }, 205);
+      setInterval(() => {
+         const actualImage = images.eq(imageNumber);
+         const actualIndex = images.index(actualImage);
+         images.each(function(index){
+            if(actualIndex === index){
+               $(this).addClass('selected');
+               circles.eq(index).addClass('selected');
+            }else{
+               $(this).removeClass('selected');
+               circles.eq(index).removeClass('selected');
+            }
+         })
+      }, 10);
+
+      function createCircles(amountOfImages){
+         for(let i = 0; i < amountOfImages; i++) {
+            $('.circles').append(`<span class="circle${i === 0 ? ' selected' : ''}" />`)
+         };
       }
    })
 </script>
