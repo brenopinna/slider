@@ -24,23 +24,23 @@
    $(() => {
       const images = $('.slide-img');
       const numberOfImages = images.length;
-      let imageNumber = 0;
+      let actualIndex = 0;
       const delay = 1000;
 
       createCircles(numberOfImages);
       const circles = $('.circle');
 
       circles.click(function(){
-         imageNumber = circles.index(this);
+         actualIndex = circles.index(this);
       })
 
       setInterval(() => {
-         imageNumber++;
-         if(imageNumber === numberOfImages) imageNumber = 0;
-      }, 1000);
+         actualIndex++;
+         if(actualIndex === numberOfImages) actualIndex = 0;
+      }, delay);
 
       setInterval(() => {
-         const actualImage = images.eq(imageNumber);
+         const actualImage = images.eq(actualIndex);
          const actualIndex = images.index(actualImage);
          images.each(function(index){
             if(actualIndex === index){
