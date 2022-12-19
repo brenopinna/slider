@@ -41,9 +41,9 @@
 
       setInterval(() => {
          const actualImage = images.eq(actualIndex);
-         const actualIndex = images.index(actualImage);
+         const newIndex = images.index(actualImage);
          images.each(function(index){
-            if(actualIndex === index){
+            if(newIndex === index){
                $(this).addClass('selected');
                circles.eq(index).addClass('selected');
             }else{
